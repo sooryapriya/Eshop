@@ -1,0 +1,85 @@
+{% extends "store/nav1.html" %}
+{% load static %}
+{% load cart %}
+{% load rupee %}
+{% block content %}
+
+<div class="box-element p-4">
+        <a  class="btn btn-outline-warning" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+</div>
+<div class="row mx-auto">
+		<div class="col-lg-6">
+			<div class="box-element" id="form-wrapper">
+				<h3 class ="text-center">Shipping Information</h3>
+                        <hr style="background-color:black">
+				<form action="" method="POST">
+					{% csrf_token %}
+				        <div class="name pt-1 m-4">
+                            <input type="text" name="name" value="{{values.name}}" placeholder="Name.." class="form-control" required>
+                        </div>
+						<div class="email pt-1 m-4">
+							<input type="text" name="email" value="{{values.name}}" placeholder="Email.." class="form-control"required>
+						</div>
+					    <div class="mobnumber pt-1 m-4">
+                            <input type="text" name="mobnumber" value="{{values.mobnumber}}" placeholder="Mobile.." class="form-control"required >
+                        </div>
+					    <div class="Address pt-1 m-4">
+                            <input type="text" name="address" value="{{values.address}}" placeholder="Address.." class="form-control"required >
+                        </div>
+					    <div class="city pt-1 m-4">
+                            <input type="text" name="city" value="{{values.city}}" placeholder="City.." class="form-control" required>
+                        </div>
+					    <div class="state pt-1 m-4">
+                            <input type="text" name="state" value="{{values.state}}" placeholder="State.." class="form-control"required >
+                        </div>
+					    <div class="zip pt-1 m-4">
+                            <input type="text" name="zip" value="{{values.zip}}" placeholder="Zip.." class="form-control" required >
+                        </div>
+                        <div class="text-center p-1 mb-4">
+                            <button class= "btn btn-outline-success" type="submit">Place your Order</button>
+
+						</div>
+                </form>
+			</div>
+		</div>
+		 <div class="col-lg-6">
+			 {% if request.session.cart %}
+
+			<div class="box-element">
+				<h3>Order Summary</h3>
+				<hr style="background-color:black">
+				<table class="table" >
+                <thead>
+                    <tr style="background-color:#0c5a02;color:white;">
+                        <th>S.no</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price </th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in products %}
+                     <tr>
+                        <td>{{forloop.counter}}</td>
+						 <td><input type ="image" img height="70px" class="rounded-circle" value = '{{i.id}}' src='{{i.image.url}}'>{{i.name}}</td>
+						 <td> {{i|cart_quantity:request.session.cart}}</td>
+                         <td> {{i|price_discount:request.session.cart|rupee}}</td>
+                         <td> {{i|price_total:request.session.cart|rupee}}</td>
+                     </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr style="background-color: #dbe6ae">
+                        <th colspan ="4">Total price</th>
+                        <th>{{products|price_amt:request.session.cart|rupee}}</th>
+
+                    </tr>
+                </tfoot>
+            </table>
+		</div>
+             {% endif %}
+	 </div>
+	 </div>
+{% endblock content %}
+

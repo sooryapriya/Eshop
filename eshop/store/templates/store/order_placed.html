@@ -1,0 +1,78 @@
+{% extends "store/nav1.html" %}
+{% load cart %}
+{% load rupee %}
+{% load static %}
+
+{% block content %}
+<style>
+
+
+
+
+tr:nth-child(even){background-color:#dbe6ae ;}
+
+th {
+  background-color: #0c5a02;;
+  color: white;
+}
+</style>
+
+<div class="box-element p-4">
+        <a  class="btn btn-outline-warning" href="{% url 'products' %}">&#x2190;  Add and Continue Shopping</a>
+</div>
+{% if request.session.customer %}
+
+         <div class="container ">
+
+        <div class="w3-panel w3-border w3-border-black rounded p-4 m-4" >
+            <h2 class="text-center">My Orders</h2>
+            <table class="table"  >
+                <thead>
+                    <tr>
+                        <th>S.no</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Order Placed on</th>
+                        <th>Status</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in order %}
+                     <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td><input type ="image" img height="70px" class="rounded-circle" value = '{{i.id}}' src='{{i.product.image.url}}'>{{i.product.name}}</td>
+                        <td>{{i.price|rupee}}</td>
+                        <td>{{i.quantity}}</td>
+                        <td>{{i.quantity|multiply:i.price|rupee}}</td>
+                        <td>{{ i.date}}</td>
+                        {% if i.status == "PENDING" %}
+                         <td><span class="badge badge-info">{{i.status}}</span></td>
+                        {% elif i.status == "DELIEVERED" %}
+                         <td><small class="badge badge-success">{{i.status}}</small></td>
+                        {% elif i.status == "ORDER PLACED" %}
+                         <td><small class="badge badge-success">{{i.status}}</small></td>
+                        {% elif i.status  == "ON PROCESS" %}
+                         <td><small class="badge badge-warning">{{i.status}}</small></td>
+                        {% elif i.status == "ON TRANSIT" %}
+                         <td><small class="badge badge-warning">{{i.status}}</small></td>
+                        {% elif i.status == "CANCELLED" %}
+                         <td><small class="badge badge-danger">{{i.status}}</small></td>
+                        {% elif i.status == "COMPLETED PROCESSING" %}
+                         <td><small class="badge badge-success">{{i.status}}</small></td>
+                        {% endif %}
+                     </tr>
+                    {% endfor %}
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "store/nav.html" %}
+{% block content %}
+<!--<div class="container">-->
+<div class="col-lg-4 mx-auto border rounded p-4 mt-4">
+     <form action="signup" method="POST">
+         {% csrf_token %}
+          <h2 class="text-center">Create Account</h2>
+          <hr style="background-color:black">
+         {% if error %}
+          <div class="alert alert-danger" role="alert"> {{error}}</div>
+         {% endif %}
+          <div class="name">
+             <label>Name</label>
+             <input type="text" name="name" value="{{values.name}}" class="form-control" >
+          </div>
+          <div class="name">
+             <label>Email</label>
+             <input type="text" name= "email" value="{{values.email}}" class="form-control" placeholder="xyz@example.com" required>
+          </div>
+          <div class="password">
+             <label>Password</label>
+             <input type="text" name= "password" value="{{values.password}}" class="form-control" >
+             <div class="invalid-feedback">
+                Please provide a char 6 long password!
+             </div>
+          </div>
+          <div class="Mobnumber">
+             <label>Mobile Number</label>
+             <input type="text" name= "mobnumber" value="{{values.mobnumber}}" class="form-control"   >
+          </div>
+          <div class="State">
+             <label >State</label>
+             <input type="text" name="state" value="{{values.state}}" class="form-control" >
+          </div>
+          <div class="City">
+            <label >City</label>
+            <input type="text" name= "city" class="form-control" value="{{values.city}}"  >
+         </div>
+          <div class="Zip">
+             <label >Zip</label>
+             <input type="text" name= "zip" class="form-control" value="{{values.zip}}"  >
+          </div>
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+              <label class="form-check-label" for="invalidCheck">
+                Agree to terms and conditions
+              </label>
+              <div class="invalid-feedback">
+                You must agree before submitting.
+              </div>
+            </div>
+          </div>
+         <div class="text-center">
+             <button class= "btn btn-primary" type="submit">Create an Account</button>
+         </div>
+         <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+     </form>
+
+</div>
+{% endblock %}

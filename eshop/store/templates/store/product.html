@@ -1,0 +1,114 @@
+{% extends "store/nav1.html" %}
+{% load cart %}
+
+{% block content %}
+<style>#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color:white ;
+  color: #0c5a02;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: white;
+}</style>
+<div class="container-fluid mt-3">
+    <div class="row">
+        <!--filter-->
+      <div class="col-lg-3 mx-auto">
+         <div class="list-group">
+            <h5>Shop by Category</h5>
+            <a href="/products" class=" list-group-item list-group-item-action " style="background-color: #034713; color:white;">All Products</a>
+            {% for c in categories %}
+                <a href="/products?category={{c.id}}" class="list-group-item list-group-item-action ">{{c.name}}</a>
+            {% endfor %}
+         </div>
+      </div>
+    <!--all products--->
+        <div id='products' class="col-lg-9 mx-auto">
+          <div class="row mx-auto">
+            {% for i in products %}
+             <div class="card border-success mx-auto mb-4" id="{{i.id}}" style="width: 18em;">
+               <img src="{{i.image.url}}" class="card-img-top" alt="...">
+               <div class="card-body text-center">
+                 <p class="card-title">{{i.name}}</p>
+                 <!--<p class="card-text"><b>{{i.rate}}</b></p>-->
+                   <span class="float-left"><del class="text-danger">₹ {{i.price}}</del></span>
+                   &nbsp;
+                   &nbsp
+                   <span class="float-left">₹ {{i.afterdiscount}}</span>
+                   &nbsp;
+                   <span class="float-right badge badge-warning">Save {{i.discount}}%</span>
+                   <!--{{ i |is_in_cart:request.session.cart }}-->
+               </div>
+               <div class="cart-footer p-1">
+                {% if i|is_in_cart:request.session.cart %}
+                  <div class="row p-1 no-gutters">
+                    <form action="/products#{{i.id}}" class="col-2" method ="POST">
+                      {% csrf_token %}
+                        <input type="text " hidden  name="product" value='{{i.id}}'>
+                        <input type="text" hidden  name="removefromcart" value='True'>
+                        <input type ="submit" value =" - " class= " btn btn-block btn-outline-secondary">
+                    </form>
+                    <div class="text-center col">{{i|cart_quantity:request.session.cart}} in cart</div>
+                    <form action="/products#{{i.id}}" class="col-2" method ="POST">
+                    {% csrf_token %}
+                        <input type="text " hidden  name="product" value='{{i.id}}'>
+                        <input type ="submit" value =" + " class= " btn btn-block btn-outline-secondary">
+                    </form>
+                  </div>
+                {% else %}
+                   <form action="/products#{{i.id}}" method="POST" class="btn-block p-1">
+                   {% csrf_token %}
+                    <input type="text" hidden  name="product" value='{{i.id}}'>
+                    <input type="submit" class="form-control btn-sm btn-outline-success" value='Add to Cart'>
+                    <!--<a href="#" class="btn-sm btn-primary">Add to Cart</a>-->
+                   </form>
+                {% endif %}
+              </div>
+             </div>
+            {% endfor %}
+          </div>
+        </div>
+        <button class="btn-outline-success" onclick="topFunction()" id="myBtn" title="Go to top"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-up" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M7.776 5.553a.5.5 0 0 1 .448 0l6 3a.5.5 0 1 1-.448.894L8 6.56 2.224 9.447a.5.5 0 1 1-.448-.894l6-3z"/>
+</svg></button>
+
+
+
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+    </div>
+</div>
+
+{% endblock %}
+
+

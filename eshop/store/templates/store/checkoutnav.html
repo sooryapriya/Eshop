@@ -1,0 +1,52 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'store/style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Kwikmart</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="text-center p-4" style="margin-bottom:-25">
+  <h1>My First Bootstrap 4 Page</h1>
+  <p>Resize this responsive page to see the effect!</p>
+</div>
+
+<nav class="navbar navbar-expand-lg" style = background-color:#0c5a02;>
+  <a class="navbar-brand" href="/home " style=color:#a7de04;>KwikMart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" style = color:white; >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav mr-auto"></ul>
+    <ul class="navbar-nav my-2 my-lg-0">
+      {% if request.session.customer %}
+      <li class="navbar-brand" style=color:white; >Hi, {{request.session.customer_name }}!</li>
+      &nbsp;
+      <li class="nav-item">
+        <a class="nav-link" href="/logout" style=color:white;>Logout</a>
+      </li>
+      {% else %}
+     <!--<li class="nav-item">
+        <a class="nav-link" href="/signup" style=color:white;><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
+          <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
+        </svg></a>
+      </li>-->
+      <li class="nav-item">
+        <a class="nav-link" href="/signup" style=color:white;>Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login" style=color:white;>Login</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{% block content %}{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "store/nav1.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="box-element p-4">
+        <a  class="btn btn-outline-warning" href="{% url 'products' %}">&#x2190; Back to  Shopping</a>
+</div>
+<div class="text-center p-2">
+    <img class="mx-auto d-block" height ="365px" src="{% static 'images/empty.png' %}" alt="My image">
+</div>
+ <p class="text-center">Empty Cart? Add to Cart and Enjoy Shopping!</p>
+{% endblock %}

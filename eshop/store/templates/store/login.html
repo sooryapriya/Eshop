@@ -1,0 +1,42 @@
+{% extends "store/nav.html" %}
+
+{% block content %}
+
+<style>
+div.one{border-style: solid;
+}
+
+</style>
+
+<div class="container">
+   <div class="one col-lg-5 mx-auto border rounded p-4 mt-4" >
+     <form action="login" method="POST">
+
+          {% csrf_token %}
+          <h2 class="text-center" >Login</h2>
+          <hr style="background-color:black">
+         {% if error %}
+          <div class="alert alert-danger" role="alert"> {{error}}</div>
+         {% endif %}
+          <div class="email p-2">
+             <label>Email</label>
+             <input type="text" name= "email" value="{{values.email}}" class="form-control" placeholder="xyz@example.com" required>
+          </div>
+          <div class="password p-2">
+             <label>Password</label>
+             <input type="text" name= "password" value="{{values.password}}" class="form-control" >
+             <div class="invalid-feedback" >
+                Please provide a char 6 long password!
+             </div>
+          </div>
+          <div>
+          </div>
+          <div class="text-center p-2">
+             <button class= "btn btn-primary" type="submit">Login</button>
+          </div>
+          <p class="text-center">Don't have an account? <a href="/signup">Create an account</a>.</p>
+     </form>
+
+</div>
+</div>
+{% endblock %}

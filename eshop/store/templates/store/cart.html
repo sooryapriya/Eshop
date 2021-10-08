@@ -1,0 +1,73 @@
+{% extends "store/nav1.html" %}
+{% load static %}
+{% load cart %}
+{% load rupee %}
+{% block content %}
+
+<div class="box-element p-4">
+        <a  class="btn btn-outline-warning" href="{% url 'products' %}">&#x2190; Continue Shopping</a>
+</div>
+
+<div class="container">
+        <div class="w3-panel w3-border w3-border-black rounded m-4 p-2">
+            <h2 class="text-center p-2">My Cart</h2>
+            <table class="table ">
+                <thead>
+                    <tr style="background-color:#0c5a02;color:white;">
+                        <th class="text-center">S.no</th>
+                        <th class="text-center">Product</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-center">Discount</th>
+                        <th class="text-center">After Discount</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in products %}
+                     <tr style="background-color nth-child(even): #dbe6ae;">
+                        <td class="text-center">{{forloop.counter}}</td>
+                        <form action ="/products#{{i.id}}"><td><input type ="image" img height="70px" class="rounded-circle" value = '{{i.id}}' src='{{i.image.url}}'>   {{i.name}}</form></td>
+                        <td class="text-center"> {{i.price|rupee}}</td>
+                        <td>
+                            {% if i|is_in_cart:request.session.cart %}
+                            <div class="row p-1 no-gutters">
+                                  <form action="" class="col-2" method ="POST">
+                                  {% csrf_token %}
+                                      <input type="text " hidden  name="product" value='{{i.id}}'>
+                                     <input type="text" hidden  name="removefromcart" value='True'>
+                                     <input type="submit" class="btn btn-outline-secondary" value="—">
+                                  </form>
+                              <div class="text-center col">{{i|cart_quantity:request.session.cart}}</div>
+                                <form action="" class="col-2" method ="POST">
+                                {% csrf_token %}
+                                    <input type="text " hidden  name="product" value='{{i.id}}'>
+                                    <input type="submit" class="btn btn-outline-secondary" value=" + ">
+                                </form>
+                              </div>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">{{i.discount}} %</td>
+                         <td class="text-center"> {{i|price_discount:request.session.cart|rupee}}</td>
+                         <td class="text-center"> {{i|price_total:request.session.cart|rupee}}</td>
+                     </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr style="background-color: #dbe6ae;">
+                        <th colspan = "6">Payable Amount</th>
+                        <th class="text-center">{{products|price_amt:request.session.cart|rupee}}</th>
+
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="m-4 p-4">
+                <a href="{% url 'checkout' %}" class="col-lg-3 btn btn-outline-success float-right">Checkout</a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

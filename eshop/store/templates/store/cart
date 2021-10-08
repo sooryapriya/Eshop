@@ -1,0 +1,173 @@
+{% extends "store/nav.html" %}
+{% load static %}
+{% block content %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="box-element">
+
+				<a  class="btn btn-outline-dark" href="{% url 'products' %}">&#x2190; Continue Shopping</a>
+
+				<br>
+				<br>
+				<table class="table">
+					<tr>
+						<th><h5>Items: <strong>3</strong></h5></th>
+						<th><h5>Total:<strong> $20</strong></h5></th>
+						<th>
+							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+						</th>
+					</tr>
+				</table>
+
+			</div>
+
+			<br>
+			<div class="box-element">
+				<div class="cart-row">
+					<div style="flex:2"></div>
+					<div style="flex:2"><strong>Item</strong></div>
+					<div style="flex:1"><strong>Price</strong></div>
+					<div style="flex:1"><strong>Quantity</strong></div>
+					<div style="flex:1"><strong>Total</strong></div>
+				</div>
+				{% for i in products %}
+				<div class="cart-row">
+					<div style="flex:2"><img class="row-image" src="{{i.image}}"></div>
+					<div style="flex:2"><p>{{i.name}}</p></div>
+					<div style="flex:1"><p>${{i.price}}</p></div>
+					<div style="flex:1">
+						<p class="quantity">{{i.quantity}}</p>
+						<div class="quantity">
+							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+
+							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+						</div>
+					</div>
+					<div style="flex:1"><p>${{item.get_total|floatformat:2}}</p></div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock content %}
+
+<a href="{% url 'checkout' %}" class="col-lg-3 btn btn-primary float-right">Checkout</a>
+<div class="container">
+
+    <div class="box-element p-4">
+        <a  class="btn btn-outline-warning" href="{% url 'products' %}">&#x2190; Continue Shopping</a>
+    </div>
+        {% if request.session.cart %}
+        <div class="border rounded p-4 m-4">
+            <h2 class="text-center">My Cart</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.no</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Discount</th>
+                        <th>After Discount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in products %}
+                     <tr>
+                        <td>{{forloop.counter}}</td>
+                        <form action ="/home#{{i.id}}"> {% csrf_token %}<td><input type ="image" img height="70px" class="rounded-circle" value = '{{i.id}}' src='{{i.image.url}}'>   {{i.name}}</form></td>
+                        <td > {{i.price}}</td>
+                        <td>{{i|cart_quantity:request.session.cart}}</td>
+                        <td>{{i.discount}} %</td>
+
+                     </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan = "6">Total price</th>
+                        <th></th>
+
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="m-4 p-4">
+                <a href="#" class="col-lg-3 btn btn-info float-right">Checkout</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+<div class="text-center p-2">
+    <img class="mx-auto d-block" height ="450px" src="{% static 'images/empty.png' %}" alt="My image">
+</div>
+ <p class="text-center">Empty Cart? <a href="/home">Add to cart and enjoy shopping!!</a>.</p>
+{% endif %}
+</div>
+{% endblock %}
+
+<style>
+tr:nth-child(even){background-color: #dbe6ae;}
+
+th {
+  color: white;
+}
+</style>
+
+<style>
+th {
+  color: white;
+}
+</style>
+
+
+
+<footer>
+  <div class="footer-main">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                  <div class="footer-widget">
+                      <h4 class="text-center">About KwikMart</h4>
+                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-12 col-sm-12 ">
+                  <div class="footer-link text-center">
+                      <h4 >Information</h4>
+                      <ul>
+                          <li><a href="#">About Us</a></li>
+                          <li><a href="#">Customer Service</a></li>
+                          <li><a href="#">Terms &amp; Conditions</a></li>
+                          <li><a href="#">Privacy Policy</a></li>
+                          <li><a href="#">Delivery Information</a></li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-12 col-sm-12">
+                  <div class="footer-link-contact">
+                      <h4>Contact Us</h4>
+                      <ul>
+                          <li>
+                              <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                              </svg> House No: 3756<br>Goubar Street Puducherry ,<br>Tamil Nadu </p>
+                          </li>
+                          <li>
+                              <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                                <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                              </svg>:  +91-888 705 7708</p>
+                          </li>
+                          <li>
+                              <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
+                              </svg>  <a style="color:black;" href="https://www.google.com/intl/en-GB/gmail/about/#">kwikmart.2021@gmail.com</a></p>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</footer>
